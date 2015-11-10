@@ -12,7 +12,6 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
-
     when /the winning page/
       '/win'
     when /the losing page/
