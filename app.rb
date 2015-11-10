@@ -44,9 +44,9 @@ class HangpersonApp < Sinatra::Base
     if @game.guess(letter)
       if current_word == @game.word_with_guesses
         flash[:message] = "Invalid."
-      else
-        flash[:message] = "You have already used that letter."
       end
+    else
+     flash[:message] = "You have already used that letter."
     end  
     erb :show
     redirect '/show'
