@@ -50,10 +50,6 @@ class HangpersonApp < Sinatra::Base
     redirect '/show'
   end
   
-  # Use existing methods in HangpersonGame to check if player has
-  # won, lost, or neither, and take the appropriate action.
-  # Notice that the show.erb template expects to use the instance variables
-  # wrong_guesses and word_with_guesses from @game.
   get '/show' do
     result = @game.check_win_or_lose
     case result
@@ -67,15 +63,15 @@ class HangpersonApp < Sinatra::Base
   end
   
   get '/win' do
-    ### YOUR CODE HERE ###
     if :win == @game.check_win_or_lose
       erb :win
     end
   end
   
   get '/lose' do
-    ### YOUR CODE HERE ###
-    erb :lose # You may change/remove this line
+    if :lose == @game.check_win_or_lose
+      erb :lose
+    end
   end
   
 end
