@@ -39,15 +39,20 @@ class HangpersonApp < Sinatra::Base
   post '/guess' do
     letter = params[:guess].to_s[0]
     current_word = @game.word_with_guesses
-    if @game.guess(letter)
-      if current_word == @game.word_with_guesses
-        flash[:message] = "Invalid."
+    begin
+      if @game.guess(letter)
+        if current_word == @game.word_with_guesses
+          flash[:message] = "Invalid."
+        end
+      else
+       flash[:message] = "You have already used that letter."
       end
-    else
-     flash[:message] = "You have already used that letter."
-    end  
-    erb :show
-    redirect '/show'
+    rescue
+      flash[:message] = "Invalid"
+    ensure
+      erb :show
+      redirect '/show'
+    end
   end
   
   get '/show' do
@@ -66,12 +71,14 @@ class HangpersonApp < Sinatra::Base
     if :win == @game.check_win_or_lose
       erb :win
     end
+    erb :show
   end
   
   get '/lose' do
     if :lose == @game.check_win_or_lose
       erb :lose
     end
+    erb :show
   end
   
 end
