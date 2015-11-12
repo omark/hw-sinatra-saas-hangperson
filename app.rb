@@ -38,13 +38,8 @@ class HangpersonApp < Sinatra::Base
   # Use existing methods in HangpersonGame to process a guess.
   post '/guess' do
     letter = params[:guess].to_s[0]
-    current_word = @game.word_with_guesses
     begin
-      if @game.guess(letter)
-        if current_word == @game.word_with_guesses
-          flash[:message] = "Invalid."
-        end
-      else
+      if !@game.guess(letter)
        flash[:message] = "You have already used that letter."
       end
     rescue
@@ -59,9 +54,9 @@ class HangpersonApp < Sinatra::Base
     result = @game.check_win_or_lose
     case result
     when :win
-      erb :win
+      redirect '/win'
     when :lose
-      erb :lose
+      redirect '/lose'
     else
       erb :show
     end 
@@ -70,15 +65,16 @@ class HangpersonApp < Sinatra::Base
   get '/win' do
     if :win == @game.check_win_or_lose
       erb :win
+    else
+      redirect '/show'
     end
-    erb :show
   end
   
   get '/lose' do
     if :lose == @game.check_win_or_lose
       erb :lose
+    else
+      redirect '/show'
     end
-    erb :show
   end
-  
 end
